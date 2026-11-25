@@ -1,124 +1,133 @@
 # Starkregen: Risikoanalyse vor Ort
 
-**Gefahr aus der Karte, Verwundbarkeit von der Straße: ein Verfahren, um das Überflutungsrisiko eines einzelnen Objekts zu bewerten, etwa eines U-Bahn-Zugangs, einer Tiefgarage oder eines Kellereingangs.**
+**Gefahr aus der Karte, Verwundbarkeit von der Straße: ein Werkzeug, um das Überflutungsrisiko eines Objekts zu bewerten, und zwar Eintrittsstelle für Eintrittsstelle.**
 
-Starkregengefahrenkarten zeigen, wo sich Wasser sammelt. Ob es dann in ein Bauwerk läuft, entscheiden Bordsteine, Einlaufgitter und deren Zustand, und die stehen in keiner Karte. Dieses Verfahren erhebt beides getrennt und führt es dann in einer Risikomatrix zusammen.
+Geeignet für alles, wo Wasser von außen eindringen kann:
+- Tiefgaragen und Unterführungen
+- U-Bahn- und Bahnhofszugänge
+- Kellereingänge und Lichtschächte
+- Untergeschosse von Krankenhäusern, Pflegeheimen oder Verwaltungsgebäuden
+- Trafostationen und Pumpwerke
+
+Starkregengefahrenkarten zeigen, wo sich Wasser sammelt. Ob es in ein Bauwerk läuft, entscheiden Schwellen, Einläufe, Gefälle und deren Zustand. Die stehen in keiner Karte. Dieses Verfahren erhebt beides getrennt und führt es in einer Risikomatrix zusammen.
 
 ## Die Idee: ein anderer Risikobegriff
 
-Üblich ist *Risiko = Eintrittswahrscheinlichkeit × Schadensausmaß*. Für ein einzelnes Bauwerk sagt das wenig: Die Wahrscheinlichkeit eines Extremregens ist für alle Zugänge in einer Straße gleich, der Schaden hängt aber am Detail vor Ort. Darum gilt hier:
+Üblich ist *Risiko = Eintrittswahrscheinlichkeit × Schadensausmaß*. Für ein einzelnes Objekt hilft das wenig: Die Wahrscheinlichkeit eines Starkregens ist für alle Eingänge eines Gebäudes gleich, der Unterschied liegt im Detail vor Ort. Darum gilt hier:
 
 > **Risiko = f(Gefahr, Verwundbarkeit)**
 
-Die **Gefahr** kommt aus der Gefahrenkarte (wie hoch steht das Wasser?), die **Verwundbarkeit** aus einer Begehung (was hält das Bauwerk aus?). Erst die Kombination zeigt, wo der **Kipppunkt** liegt, ab dem das Risiko sprunghaft steigt.
+Die **Gefahr** kommt aus der Gefahrenkarte (wie hoch steht das Wasser an der Eintrittsstelle?), die **Verwundbarkeit** aus einer Begehung (was hält die Eintrittsstelle aus?). Erst beides zusammen zeigt, wo der **Kipppunkt** liegt, ab dem das Risiko sprunghaft steigt.
 
 ![Ablauf](abbildungen/forschungsdesign.png)
 
+## Was man braucht
+
+- eine Starkregengefahrenkarte, z. B. die bundesweite *Hinweiskarte Starkregengefahren* des BKG, eine Landeskarte oder eine kommunale Starkregengefahrenkarte
+- QGIS oder den Kartendienst der Karte, um Wasserstände an Punkten abzulesen
+- Zollstock, Kamera und den Erfassungsbogen aus der Excel
+- das Werkzeug: [`werkzeug/starkregen_vor_ort.xlsx`](werkzeug/starkregen_vor_ort.xlsx) (Excel ab 2010, keine Makros). Gelbe Felder sind Eingaben, graue werden berechnet.
+
 ## Schritt für Schritt
 
-### Schritt 1: Szenario festlegen
+### Schritt 1: Objekt und Szenario festlegen · Blatt *1 Objekt und Szenario*
 
-Das Szenario wird nach dem Schema des BBK-Leitfadens *Risikoanalyse im Bevölkerungsschutz* beschrieben: Ereignis, Ort und Ausdehnung, Intensität, Zeitpunkt und Dauer, Verlauf, Vorwarnzeit und Referenzereignisse. Beispiel: extremer Starkregen mit etwa 90 mm in einer Stunde plus einer Stunde Nachlauf, ohne nennenswerte Vorwarnzeit.
+Das Objekt beschreiben und das Szenario nach dem Schema des BBK-Leitfadens *Risikoanalyse im Bevölkerungsschutz* festlegen: Ereignis, Ort und Ausdehnung, Intensität, Zeitpunkt und Dauer, Verlauf, Vorwarnzeit, Referenzereignisse. Außerdem werden zwei Gefahrenszenarien aus der Karte benannt, z. B. *außergewöhnlich* (etwa 100-jährlich) und *extrem*.
 
-### Schritt 2: Gefahr aus der Karte (GIS)
+### Schritt 2: Gefahr aus der Karte · Blatt *2 Gefahr*
 
-1. In QGIS die *Hinweiskarte Starkregengefahren* (BKG) bzw. die Starkregengefahrenkarte NRW per WMS laden. Die Karte liegt im 1-m-Raster vor und rechnet ohne Kanalnetz, ist also bewusst ungünstig.
-2. **Screening:** Alle Objekte der Art (z. B. alle U-Bahn-Zugänge einer Stadt) als Punkte anlegen und den Wasserstand auslesen. Das Objekt mit den höchsten Werten wird im Detail untersucht.
-3. Am ausgewählten Objekt jeden Zugang als Punkt setzen, und zwar an der Stelle, an der das Wasser eintreten würde (z. B. oberste Treppenstufe).
-4. Den Wasserstand je Zugang für zwei Szenarien auslesen: außergewöhnlich (etwa 100-jährlich) und extrem.
+1. **Eintrittsstellen festlegen:** Jede Öffnung, über die Wasser eindringen kann, bekommt eine ID (E1, E2 …). Das sind zum Beispiel Treppen, Rampen, Türen, Lichtschächte, Einfahrten und Aufzüge.
+2. **Messpunkt setzen:** dort, wo das Wasser eintreten würde, also an der obersten Treppenstufe, an der Kante der Einfahrt oder an der Türschwelle.
+3. **Wasserstand ablesen** für beide Szenarien. Maßgebend ist der höhere Wert, daraus ergibt sich die Gefahrenstufe:
+
+| Wasserstand | Gefahrenstufe |
+|---|---|
+| unter 10 cm | gering |
+| 10 bis 30 cm | mittel |
+| über 30 cm | hoch |
+
+*Tipp:* Bei mehreren Objekten derselben Art (z. B. alle Tiefgaragen eines Quartiers) zuerst alle grob über die Karte prüfen und dann das mit den höchsten Wasserständen begehen.
+
+### Schritt 3: Begehung · Blatt *Erfassungsbogen* und Blatt *3 Begehung*
+
+Den Erfassungsbogen ausdrucken und je Eintrittsstelle einmal ausfüllen. Dazu Fotos machen: Übersicht, Schwelle und Einlauf, Umfeld, Technik. Danach die Werte ins Blatt *3 Begehung* übertragen.
+
+Alle Faktoren werden auf **1 (günstig) bis 5 (ungünstig)** eingeschätzt, nach dem Vorgehen des OECD-Handbuchs für zusammengesetzte Indikatoren:
+
+| Kategorie | Faktor | 1 | 5 |
+|---|---|---|---|
+| **Bauliche Struktur** | Schwellenhöhe | ≥ 15 cm (dazwischen: < 15 → 2, < 10 → 3, < 5 → 4) | keine Schwelle |
+| | Gefälle zur Öffnung | Gelände steigt zur Öffnung an | starkes Gefälle zur Öffnung |
+| | Direktschutz | komplett überdacht oder geschlossen | offen |
+| **Entwässerung** | Einlauf/Rinne vor der Öffnung | frei | verstopft oder keiner vorhanden |
+| **Umfeld** | Mikrotopografie | Bordsteine/Gelände leiten Wasser ab | leiten Wasser hin |
+| | Versiegelung (5 m) | Grünfläche | vollständig versiegelt |
+| | Einläufe im Umfeld (20 m) | frei | verstopft |
+| | Baustellen (20 m) | keine | großflächig geöffnet |
+| **Schutzziel Mensch** | Entfluchtung | sicherer, erhöhter Vorplatz | direkt in den Straßenverkehr |
+| | Warnung | redundante Warnsysteme | keine |
+| **Technik im Inneren** | Energie, IT/Kommunikation, Förder- und Gebäudetechnik | nicht vorhanden | vorhanden und exponiert (geschützt = 3) |
+
+Die Schwellenhöhe wird in cm eingetragen und automatisch umgerechnet. Das Puffervolumen von Schacht oder Rinne wird nur dokumentiert.
+
+### Schritt 4: Regeln prüfen · Blatt *4 Regeln*
+
+Alle Stellschrauben stehen an einem Ort und lassen sich anpassen:
+
+- **Gewichte:** Entwässerung 40 %, bauliche Struktur 20 %, Umfeld 20 %, Schutzziel Mensch 10 %, Technik im Inneren 10 %. Ein Kontrollfeld prüft, dass die Summe 100 % ergibt. Die Entwässerung zählt am meisten, weil ein verstopfter Einlauf das System kippen lässt.
+- **Schwellenwerte** für Schwellenhöhe, Gefahrenstufe und Verwundbarkeitsstufe (Index bis 2 gering, bis 4 mittel, darüber hoch)
+- **Risikomatrix:**
+
+| Gefahr ↓ · Verwundbarkeit → | gering | mittel | hoch |
+|---|---|---|---|
+| **hoch** | niedrig | mittel | **hoch** |
+| **mittel** | kein | niedrig | mittel |
+| **gering** | kein | kein | niedrig |
+
+### Schritt 5: Ergebnis ablesen · Blatt *5 Ergebnis*
+
+Je Eintrittsstelle berechnet die Excel:
+- den **Mittelwert je Kategorie** und den gewichteten **Verwundbarkeitsindex** (1 bis 5) mit der Verwundbarkeitsstufe
+- das **Risiko im Normalzustand** aus der Matrix
+- das **Risiko bei Versagen:** Was passiert, wenn der Schutz ausfällt, etwa weil Laub den Einlauf verstopft? Dann gilt die Spalte „Verwundbarkeit hoch“.
+- den **Kipppunkt:** Wo das Risiko dabei springt, hängt die Sicherheit am Zustand des Schutzes
+
+Für das ganze Objekt gibt es den mittleren Index und eine Übersicht, wie viele Eintrittsstellen in welche Risikostufe fallen.
+
+**Was man daraus ableitet:** Eintrittsstellen mit hoher Gefahr und Kipppunkt zuerst. Wo die Entwässerung den Ausschlag gibt, hilft oft schon eine regelmäßige Reinigung der Einläufe vor der Starkregensaison.
+
+## Beispiel: U-Bahn-Haltestelle Steinstraße/Königsallee, Düsseldorf
+
+Die Datei [`beispiel/beispiel_u-bahn_steinstrasse.xlsx`](beispiel/beispiel_u-bahn_steinstrasse.xlsx) enthält eine vollständige Anwendung mit 9 Zugängen, begangen am 11. April 2026. Die Station war bei einem stadtweiten Screening der U-Bahn-Zugänge die mit den höchsten Wasserständen.
 
 ![Gefahrenkarte mit Zugängen](abbildungen/gefahrenkarte.png)
-
-### Schritt 3: Begehung mit dem Erfassungsprotokoll
-
-Mit dem [Erfassungsprotokoll](werkzeuge/erfassungsprotokoll.docx) wird jeder Zugang einzeln aufgenommen, dazu Übersichts- und Detailfotos.
 
 | Zugang T6 | Einlaufgitter an T6 |
 |---|---|
 | ![Zugang](abbildungen/zugang_t6.jpg) | ![Einlaufgitter](abbildungen/einlaufgitter_t6.jpg) |
 
-Das Protokoll erfasst drei Arten von Daten: Messwerte (Bordsteinhöhe in cm, Volumen des Schachts in m³), Einschätzungen auf einer Skala von 1 bis 5 und eine Bestandsaufnahme der Technik in der Station.
-
-### Schritt 4: Alles auf eine Skala bringen
-
-Jeder Faktor wird auf **1 (sehr geringe) bis 5 (kritische) Verwundbarkeit** übersetzt, nach dem Vorgehen des OECD-Handbuchs für zusammengesetzte Indikatoren:
-
-| Kategorie | Faktor | 1 | 5 |
-|---|---|---|---|
-| **Bauliche Struktur** | Bordsteinhöhe | ≥ 15 cm (dazwischen: < 15 → 2, < 10 → 3, < 5 → 4) | 0 cm |
-| | Gefälle | starke Steigung zum Zugang | starkes Gefälle zum Zugang |
-| | Baulicher Direktschutz | komplett überdacht | offen |
-| **Lokale Entwässerung** | Zustand Einlaufgitter | frei | verstopft |
-| **Umfeld** | Mikrotopografie | Bordsteine leiten Wasser ab | Bordsteine leiten Wasser hin |
-| | Versiegelung (5 m) | Grünfläche | versiegelt |
-| | Straßeneinläufe (20 m) | frei | verstopft |
-| | Baustellen (20 m) | keine | großflächig geöffnet |
-| **Schutzziel Mensch** | Entfluchtung | sicherer Vorplatz | direkt in den Straßenverkehr |
-| | Warnung | redundante Warnsysteme | keine |
-| **Verteilerebene** | Energie, IT, Transport (z. B. Stromverteiler, Notrufsäulen, Aufzugsgrube) | nicht vorhanden | vorhanden und exponiert (geschützt = 3) |
-
-Die Bordsteinhöhe rechnet die Excel automatisch um. Das Volumen des Schachts wird als Pufferkapazität mitgeführt, geht aber nicht in den Index ein.
-
-### Schritt 5: Gewichten und den Index bilden
-
-![Aufbau des Index](abbildungen/vulnerabilitaetsindex_aufbau.png)
-
-Je Kategorie wird der Mittelwert gebildet und dann gewichtet. Die Entwässerung zählt am meisten, weil ein verstopftes Gitter das ganze System kippen lässt:
-
-| Entwässerung | Bauliche Struktur | Umfeld | Schutzziel Mensch | Verteilerebene |
-|---|---|---|---|---|
-| 40 % | 20 % | 20 % | 10 % | 10 % |
-
-In der [Excel](werkzeuge/vulnerabilitaetsindex.xlsx) kommen die Rohwerte ins Blatt **Auswertung Vulnerab.**, die Gewichte stehen im Blatt **Dashboard** in Zeile 2. Ein Kontrollfeld prüft, dass die Gewichte zusammen 1 ergeben. Ergebnis ist der Index je Zugang und der Mittelwert für das Objekt:
-
-| Index | Verwundbarkeit |
-|---|---|
-| 1 | sehr gering |
-| über 1 bis 2 | gering |
-| über 2 bis 3 | mittel |
-| über 3 bis 4 | hoch |
-| über 4 bis 5 | kritisch |
-
-### Schritt 6: Risikomatrix
-
-Gefahr und Verwundbarkeit werden in einer 3 × 3-Matrix zusammengeführt. Jedes Feld ist als kurzes Szenario beschrieben und nicht nur als Farbe.
-
-- **Gefahr** nach Wasserstand am Zugang: gering < 10 cm, mittel 10–30 cm, hoch > 30 cm
-- **Verwundbarkeit** nach Index: gering (um 1), mittel (um 3), hoch (um 5)
-
-![Risikomatrix](abbildungen/risikomatrix.png)
-
-### Schritt 7: Kipppunkt und Worst Case
-
-Ohne Daten der Betreiber (Pumpen, Kanalkapazität) lassen sich Wassermengen im Untergrund nicht seriös rechnen. Stattdessen wird gefragt: **Was passiert, wenn die Schutzmechanismen versagen?** Verstopfen die Gitter, verschiebt sich ein Zugang in der Matrix nach rechts. Wo dann eine hohe Gefahr auf hohe Verwundbarkeit trifft, liegt der Kipppunkt. Ab dort läuft das Wasser ungehindert in das Bauwerk.
-
-## Beispiel: U-Bahn Steinstraße/Königsallee, Düsseldorf
-
-Die Excel enthält die Werte dieser Begehung (9 Zugänge, 11. April 2026).
-
-| Zugang | Wasserstand extrem | Index | Zugang | Wasserstand extrem | Index |
+| Zugang | Wasserstand | Gefahr | Index | Risiko | bei Versagen |
 |---|---|---|---|---|---|
-| A1 (Aufzug) | 0 cm* | 2,23 | T5 | 4 cm | 2,90 |
-| T1 | **40 cm** | 2,18 | T6 | 29 cm | 2,77 |
-| T2 | 27 cm | 2,08 | T7 | 7 cm | 2,62 |
-| T3 | 13 cm | 2,43 | T8 | 25 cm | **2,95** |
-| T4 | 8 cm | 2,30 | **Station** | | **2,50 (mittel)** |
+| T1 Treppe | 40 cm | hoch | 2,18 | mittel | **hoch** |
+| T2 Rolltreppe | 27 cm | mittel | 2,08 | niedrig | mittel |
+| T6 Treppe | 29 cm | mittel | 2,77 | niedrig | mittel |
+| T8 Rolltreppe | 25 cm | mittel | 2,95 | niedrig | mittel |
+| T3 Rolltreppe | 13 cm | mittel | 2,43 | niedrig | mittel |
+| A1 Aufzug, T4, T5, T7 | 0–8 cm | gering | 2,23–2,90 | kein | niedrig |
+| **Station** | | | **2,50 (mittel)** | | |
 
-\* Die Straße daneben ist überflutet, der Aufzug selbst nicht. Vermutlich ist das ein Artefakt des Rasters.
-
-Solange die Gitter frei sind, liegt die Station im mittleren Bereich. Verstopfen sie, kippt T1 mit 40 cm Wasser ins rote Feld. Zum Vergleich: Ab etwa 0,35 m Wassertiefe bei 0,5 m/s kann ein Kind den Halt verlieren.
+Solange die Einläufe frei sind, hält die Station. Verstopfen sie, springt jeder Zugang eine Stufe höher, und T1 kommt mit 40 cm Wasser ins Feld „hoch“. Zum Vergleich: Ab etwa 0,35 m Wassertiefe bei 0,5 m/s Fließgeschwindigkeit kann ein Kind den Halt verlieren. Beim Aufzug A1 zeigt die Karte 0 cm, obwohl die Straße daneben überflutet ist. Das ist vermutlich ein Artefakt des Rasters, und deshalb gehört die Begehung dazu.
 
 ## Grenzen
 
-- Das Raster der Karte glättet: Bordsteine und Gitter fehlen. Die Begehung gleicht das aus, ist aber eine Momentaufnahme, denn Laub und Wartung ändern den Zustand der Gitter.
+- Gefahrenkarten im 1-m-Raster glätten: Schwellen und Einläufe fehlen. Manche Karten rechnen ohne Kanalnetz und sind damit bewusst ungünstig.
+- Die Begehung ist eine Momentaufnahme. Laub und Wartung ändern den Zustand der Einläufe von Woche zu Woche.
 - Die Einschätzungen von 1 bis 5 sind subjektiv. Fotos sichern sie ab, besser ist eine zweite Person, die unabhängig bewertet.
-- Die Gewichte sind begründet, aber nicht empirisch hergeleitet. Es lohnt sich zu prüfen, ob sich die Reihenfolge der Zugänge bei anderen Gewichten ändert.
-- Ohne Betreiberdaten bleibt der Verlauf im Untergrund eine Annahme.
+- Gewichte und Schwellenwerte sind begründet, aber nicht empirisch hergeleitet. Es lohnt sich zu prüfen, ob sich die Reihenfolge der Eintrittsstellen bei anderen Gewichten ändert.
+- Was im Inneren passiert (Pumpen, Volumen, Ausbreitung), bildet das Verfahren nicht ab. Dafür braucht es Daten des Betreibers.
 
 ## Herkunft
 
-Entstanden in der Arbeit „Risikoanalyse pluvialer Überflutungen an urbanen U-Bahn-Systemen“ im Modul Naturgefahren und -risiken (Prof. Dr. Alexander Fekete), Institut für Rettungsingenieurwesen und Gefahrenabwehr, TH Köln, 2026, von Hendrik Platz und Tom Thum. Mehr zur Arbeit: [Steckbrief in RIW-Projekte](https://github.com/2708Tom/RIW-Projekte/tree/main/2026-07_NGR_Starkregen-U-Bahn).
+Methode von Hendrik Platz und Tom Thum, entwickelt in einer Arbeit im Modul Naturgefahren und -risiken (Prof. Dr. Alexander Fekete), Institut für Rettungsingenieurwesen und Gefahrenabwehr, TH Köln, 2026. Die ursprüngliche Anwendung: [Steckbrief in RIW-Projekte](https://github.com/2708Tom/RIW-Projekte/tree/main/2026-07_NGR_Starkregen-U-Bahn).
 
-**Korrektur gegenüber der Hausarbeit:** In der ursprünglichen Excel ging die Verteilerebene nicht in den Gesamtindex ein, obwohl sie mit 10 % gewichtet war. Das ist hier behoben. Der Index der Station steigt dadurch von 2,17 auf 2,50 und bleibt im Bereich „mittel“.
-
-Daten: Hinweiskarte Starkregengefahren © BKG; Starkregengefahrenkarte NRW, Geobasis NRW; © OpenStreetMap-Mitwirkende.
+Daten im Beispiel: Hinweiskarte Starkregengefahren © BKG; Starkregengefahrenkarte NRW, Geobasis NRW; © OpenStreetMap-Mitwirkende.
