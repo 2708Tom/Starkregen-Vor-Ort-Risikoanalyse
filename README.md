@@ -25,7 +25,7 @@ Die **Gefahr** kommt aus der Gefahrenkarte (wie hoch steht das Wasser an der Ein
 
 - eine Starkregengefahrenkarte, z. B. die bundesweite *Hinweiskarte Starkregengefahren* des BKG, eine Landeskarte oder eine kommunale Starkregengefahrenkarte
 - QGIS oder den Kartendienst der Karte, um Wasserstände an Punkten abzulesen
-- Zollstock, Kamera und den Erfassungsbogen aus der Excel
+- Zollstock, Kamera und das Erfassungsprotokoll: [`werkzeug/erfassungsprotokoll.docx`](werkzeug/erfassungsprotokoll.docx) zum Ausdrucken oder Ausfüllen am Tablet. Eine Kurzfassung steht auch als Blatt in der Excel.
 - das Werkzeug: [`werkzeug/starkregen_vor_ort.xlsx`](werkzeug/starkregen_vor_ort.xlsx) (Excel ab 2010, keine Makros). Gelbe Felder sind Eingaben, graue werden berechnet.
 
 ## Schritt für Schritt
@@ -48,9 +48,9 @@ Das Objekt beschreiben und das Szenario nach dem Schema des BBK-Leitfadens *Risi
 
 *Tipp:* Bei mehreren Objekten derselben Art (z. B. alle Tiefgaragen eines Quartiers) zuerst alle grob über die Karte prüfen und dann das mit den höchsten Wasserständen begehen.
 
-### Schritt 3: Begehung · Blatt *Erfassungsbogen* und Blatt *3 Begehung*
+### Schritt 3: Begehung · Erfassungsprotokoll und Blatt *3 Begehung*
 
-Den Erfassungsbogen ausdrucken und je Eintrittsstelle einmal ausfüllen. Dazu Fotos machen: Übersicht, Schwelle und Einlauf, Umfeld, Technik. Danach die Werte ins Blatt *3 Begehung* übertragen.
+Das [Erfassungsprotokoll](werkzeug/erfassungsprotokoll.docx) je Eintrittsstelle einmal ausfüllen. Den Wasserstand aus der Karte trägt man vorab ein. Dazu Fotos machen: Übersicht, Schwelle und Einlauf, Umfeld, Technik. Das Protokoll fragt dieselben Faktoren in derselben Reihenfolge ab wie die Excel. Bei jedem Feld steht, in welche Spalte von Blatt *3 Begehung* der Wert gehört (→ B, → D …).
 
 Alle Faktoren werden auf **1 (günstig) bis 5 (ungünstig)** eingeschätzt, nach dem Vorgehen des OECD-Handbuchs für zusammengesetzte Indikatoren:
 
