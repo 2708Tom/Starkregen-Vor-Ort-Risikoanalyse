@@ -50,15 +50,15 @@ Die Entwässerung zählt am meisten, weil ein verstopfter Einlauf das System kip
 | *Vulnerabilität* | Mittelwert je Kategorie, gewichtet zum Index (1 bis 5), einteilen: bis 2, bis 4, darüber | Vulnerabilität 1, 2 oder 3 |
 | *Risiko* | **Gefahr × Vulnerabilität** | Risikozahl 1 bis 9: bis 2 kein, bis 4 niedrig, bis 6 mittel, 9 hoch |
 
-Im Blatt *Risiko* steht für jede Eintrittsstelle die Rechnung, z. B. 3 × 2 = 6 → mittel. Daneben steht die **Risikomatrix**: In jedem Feld stehen das Produkt und die IDs der Eintrittsstellen, die Farbe zeigt das Risiko.
+Im Blatt *Risiko* steht für jede Eintrittsstelle Gefahr, Vulnerabilität und das Risiko. Daneben steht die **Risikomatrix**: In jedem Feld stehen die IDs der Eintrittsstellen, die Farbe zeigt das Risiko.
 
-| Gefahr ↓ · Vulnerabilität → | gering (1) | mittel (2) | hoch (3) |
+| Gefahr ↓ · Vulnerabilität → | gering | mittel | hoch |
 |---|---|---|---|
-| **hoch (3)** | 🟨 3 · niedrig | 🟧 6 · mittel | 🟥 9 · hoch |
-| **mittel (2)** | 🟩 2 · kein | 🟨 4 · niedrig | 🟧 6 · mittel |
-| **gering (1)** | 🟩 1 · kein | 🟩 2 · kein | 🟨 3 · niedrig |
+| **hoch** | 🟨 niedrig | 🟧 mittel | 🟥 hoch |
+| **mittel** | 🟩 kein | 🟨 niedrig | 🟧 mittel |
+| **gering** | 🟩 kein | 🟩 kein | 🟨 niedrig |
 
-**Risiko bei Versagen der Schutzeinrichtungen:** Schwellen, Einläufe und Rinnen schützen nur, solange sie funktionieren. Verstopft etwa Laub den Einlauf, wird die Vulnerabilität hoch (3), und das Risiko ist Gefahr × 3. Springt es dabei auf eine höhere Stufe, liegt dort ein **Kipppunkt**. Eintrittsstellen mit hoher Gefahr und Kipppunkt sind die ersten Kandidaten für Maßnahmen. Oft hilft schon eine regelmäßige Reinigung der Einläufe vor der Starkregensaison.
+**Worst Case und Kipppunkt:** Schwellen, Einläufe und Rinnen sind Kompensationsmaßnahmen. Sie halten Wasser zurück, aber nur bis zu einem Punkt. Irgendwann, bei extremer Regenmenge, zugesetztem Gitter oder überlasteter Kanalisation, wirken sie nicht mehr, und die **Vulnerabilität ist maximal**. Die Excel zeigt deshalb für jede Eintrittsstelle auch das Risiko im Worst Case. Wo es dabei steigt, liegt ein **Kipppunkt**: Dort hängt die Sicherheit allein an der Kompensation. Eintrittsstellen mit hoher Gefahr und Kipppunkt sind die ersten Kandidaten für Maßnahmen. Oft hilft schon eine regelmäßige Reinigung der Einläufe vor der Starkregensaison.
 
 ## Beispiel: U-Bahn-Haltestelle Steinstraße/Königsallee, Düsseldorf
 
@@ -74,11 +74,11 @@ Risikomatrix der Station (mittlerer Index 2,50, alle Zugänge mit mittlerer Vuln
 
 | Gefahr ↓ · Vulnerabilität → | gering (1) | mittel (2) | hoch (3) |
 |---|---|---|---|
-| **hoch (3)** | | 🟧 3 × 2 = 6: **T1** (40 cm) | |
-| **mittel (2)** | | 🟨 2 × 2 = 4: T2 · T3 · T6 · T8 | |
-| **gering (1)** | | 🟩 1 × 2 = 2: A1 · T4 · T5 · T7 | |
+| **hoch** | | 🟧 **T1** (40 cm) | |
+| **mittel** | | 🟨 T2 · T3 · T6 · T8 | |
+| **gering** | | 🟩 A1 · T4 · T5 · T7 | |
 
-Solange die Schutzeinrichtungen funktionieren, hält die Station. Versagen sie, springt jeder Zugang eine Stufe nach oben, und T1 landet mit 3 × 3 = 9 im roten Feld. Zum Vergleich: Ab etwa 0,35 m Wassertiefe bei 0,5 m/s kann ein Kind den Halt verlieren. Beim Aufzug A1 zeigt die Karte 0 cm, obwohl die Straße daneben überflutet ist. Das ist vermutlich ein Artefakt des Rasters, und deshalb gehört die Begehung dazu.
+Solange Gitter und Schwellen wirken, hält die Station. Versagen sie, ist die Vulnerabilität maximal, jeder Zugang steigt eine Stufe, und T1 landet im roten Feld. Zum Vergleich: Ab etwa 0,35 m Wassertiefe bei 0,5 m/s kann ein Kind den Halt verlieren. Beim Aufzug A1 zeigt die Karte 0 cm, obwohl die Straße daneben überflutet ist. Das ist vermutlich ein Artefakt des Rasters, und deshalb gehört die Begehung dazu.
 
 ## Grenzen
 
