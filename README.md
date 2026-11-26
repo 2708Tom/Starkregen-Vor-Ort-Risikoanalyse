@@ -58,7 +58,7 @@ Im Blatt *Risiko* steht für jede Eintrittsstelle Gefahr, Vulnerabilität und da
 | **mittel** | 🟩 kein | 🟨 niedrig | 🟧 mittel |
 | **gering** | 🟩 kein | 🟩 kein | 🟨 niedrig |
 
-**Worst Case und Kipppunkt:** Schwellen, Einläufe und Rinnen sind Kompensationsmaßnahmen. Sie halten Wasser zurück, aber nur bis zu einem Punkt. Irgendwann, bei extremer Regenmenge, zugesetztem Gitter oder überlasteter Kanalisation, wirken sie nicht mehr, und die **Vulnerabilität ist maximal**. Die Excel zeigt deshalb für jede Eintrittsstelle auch das Risiko im Worst Case. Wo es dabei steigt, liegt ein **Kipppunkt**: Dort hängt die Sicherheit allein an der Kompensation. Eintrittsstellen mit hoher Gefahr und Kipppunkt sind die ersten Kandidaten für Maßnahmen. Oft hilft schon eine regelmäßige Reinigung der Einläufe vor der Starkregensaison.
+**Worst Case:** Schwellen, Einläufe und Rinnen sind Kompensationsmaßnahmen. Sie halten Wasser zurück, aber nur bis zu einem gewissen Punkt. Bei extremer Regenmenge, zugesetztem Gitter oder überlasteter Kanalisation wirken sie irgendwann nicht mehr. Das ist der Kipppunkt. Ab dann ist die Vulnerabilität maximal. Die Excel zeigt für jede Eintrittsstelle neben dem Risiko im Normalzustand auch das Risiko im Worst Case. Eintrittsstellen, die im Worst Case ein hohes Risiko haben, sind die ersten Kandidaten für Maßnahmen. Oft hilft schon eine regelmäßige Reinigung der Einläufe vor der Starkregensaison.
 
 ## Beispiel: U-Bahn-Haltestelle Steinstraße/Königsallee, Düsseldorf
 
