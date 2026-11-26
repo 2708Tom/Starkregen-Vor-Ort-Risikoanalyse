@@ -6,11 +6,20 @@ Geeignet für alles, wo Wasser von außen eindringen kann: Tiefgaragen, Unterfü
 
 ## Die Idee
 
-Starkregengefahrenkarten zeigen, wo sich Wasser sammelt. Ob es in ein Bauwerk läuft, entscheiden Schwellen, Einläufe, Gefälle und deren Zustand, und die stehen in keiner Karte. Darum gilt hier nicht *Wahrscheinlichkeit × Schaden*, sondern:
+Starkregengefahrenkarten zeigen, wo sich Wasser sammelt. Ob es in ein Bauwerk läuft, entscheiden Schwellen, Einläufe, Gefälle und deren Zustand, und die stehen in keiner Karte. Darum gilt hier:
 
 > **Risiko = Gefahr × Vulnerabilität**
 
-Die **Gefahr** ist der Wasserstand an der Eintrittsstelle laut Karte. Die **Vulnerabilität** kommt aus einer Begehung. Beide werden in drei Stufen (1 bis 3) eingeteilt, ihr Produkt ist die Risikozahl (1 bis 9). Erst beides zusammen zeigt, wo der **Kipppunkt** liegt, ab dem das Risiko sprunghaft steigt.
+Die **Gefahr** ist der Wasserstand an der Eintrittsstelle laut Karte. Die **Vulnerabilität** kommt aus einer Begehung. Beide werden in drei Stufen (1 bis 3) eingeteilt, ihr Produkt ist die Risikozahl (1 bis 9).
+
+### Warum nicht Eintrittswahrscheinlichkeit mal Schadenshöhe?
+
+Der klassische Risikobegriff hilft bei einem einzelnen Objekt wenig:
+
+- **Die Wahrscheinlichkeit unterscheidet nichts.** Ein Starkregen trifft alle Eintrittsstellen eines Gebäudes gleich wahrscheinlich. Ob Wasser eindringt, entscheidet sich am baulichen Detail jeder einzelnen Öffnung.
+- **Belastbare Wahrscheinlichkeiten fehlen.** Starkregengefahrenkarten rechnen Szenarien (außergewöhnlich, extrem), aber keine Wahrscheinlichkeit dafür, dass an einer bestimmten Treppe Wasser eindringt. Lokale Extremregen sind kaum vorherzusagen.
+- **Die Schadenshöhe ist vor Ort nicht zu beziffern.** Was hinter einer Öffnung passiert (Pumpen, Technik, Personen), wissen nur die Betreiber. Ohne deren Daten wäre jede Zahl geschätzt.
+- **Die Vulnerabilität lässt sich beeinflussen.** Einläufe reinigen, Schwellen erhöhen, Technik hochlegen: Ein Ansatz über die Vulnerabilität zeigt direkt, wo Maßnahmen wirken.
 
 ![Ablauf](abbildungen/forschungsdesign.png)
 
@@ -18,7 +27,7 @@ Die **Gefahr** ist der Wasserstand an der Eintrittsstelle laut Karte. Die **Vuln
 
 - eine Starkregengefahrenkarte, z. B. die bundesweite *Hinweiskarte Starkregengefahren* des BKG oder eine kommunale Karte
 - das [Erfassungsprotokoll](werkzeug/erfassungsprotokoll.docx) (Word), Zollstock und Kamera
-- die Excel [`werkzeug/starkregen_vor_ort.xlsx`](werkzeug/starkregen_vor_ort.xlsx) mit den Blättern *Anleitung*, *Eingabe*, *Gefahr*, *Vulnerabilität* und *Risiko*. Gelbe Felder sind Eingaben, graue werden berechnet.
+- die Excel [`werkzeug/starkregen_vor_ort.xlsx`](werkzeug/starkregen_vor_ort.xlsx) mit den Blättern *Anleitung*, *Eingabe*, *Gefahr*, *Vulnerabilität* und *Risiko*. Hellblaue Felder sind Eingaben, weiße werden berechnet. Die Farben folgen der DIN EN ISO 22324 für farbcodierte Alarme.
 
 ## So geht es
 
@@ -42,6 +51,8 @@ Die Entwässerung zählt am meisten, weil ein verstopfter Einlauf das System kip
 
 **4. Eintragen.** Im Blatt *Eingabe* eine Zeile je Eintrittsstelle. Das Protokoll nennt bei jedem Feld die passende Spalte (→ A, → B …).
 
+![Blatt Eingabe](abbildungen/eingabe.png)
+
 **5. Auswerten.** Die Excel rechnet in drei Blättern, jedes mit seinen Grenzwerten oben:
 
 | Blatt | Was passiert | Ergebnis |
@@ -50,15 +61,19 @@ Die Entwässerung zählt am meisten, weil ein verstopfter Einlauf das System kip
 | *Vulnerabilität* | Mittelwert je Kategorie, gewichtet zum Index (1 bis 5), einteilen: bis 2, bis 4, darüber | Vulnerabilität 1, 2 oder 3 |
 | *Risiko* | **Gefahr × Vulnerabilität** | Risikozahl 1 bis 9: bis 2 kein, bis 4 niedrig, bis 6 mittel, 9 hoch |
 
-Im Blatt *Risiko* steht für jede Eintrittsstelle Gefahr, Vulnerabilität und das Risiko. Daneben steht die **Risikomatrix**: In jedem Feld stehen die IDs der Eintrittsstellen, die Farbe zeigt das Risiko.
+Das Blatt *Gefahr* teilt die Wasserstände ein:
 
-| Gefahr (Zeilen), Vulnerabilität (Spalten) | gering | mittel | hoch |
-|---|---|---|---|
-| **hoch** | 🟨 niedrig | 🟧 mittel | 🟥 hoch |
-| **mittel** | 🟩 kein | 🟨 niedrig | 🟧 mittel |
-| **gering** | 🟩 kein | 🟩 kein | 🟨 niedrig |
+![Blatt Gefahr](abbildungen/gefahr.png)
 
-**Worst Case:** Schwellen, Einläufe und Rinnen sind Kompensationsmaßnahmen. Sie halten Wasser zurück, aber nur bis zu einem gewissen Punkt. Bei extremer Regenmenge, zugesetztem Gitter oder überlasteter Kanalisation wirken sie irgendwann nicht mehr. Das ist der Kipppunkt. Ab dann ist die Vulnerabilität maximal. Die Excel zeigt für jede Eintrittsstelle neben dem Risiko im Normalzustand auch das Risiko im Worst Case. Eintrittsstellen, die im Worst Case ein hohes Risiko haben, sind die ersten Kandidaten für Maßnahmen. Oft hilft schon eine regelmäßige Reinigung der Einläufe vor der Starkregensaison.
+Das Blatt *Vulnerabilität* bildet aus der Begehung den gewichteten Index. Gewichte und Grenzwerte stehen oben und lassen sich anpassen:
+
+![Blatt Vulnerabilität](abbildungen/vulnerabilitaet.png)
+
+Das Blatt *Risiko* multipliziert beides und zeigt die Risikomatrix. In jedem Feld stehen die IDs der Eintrittsstellen, die Farbe zeigt das Risiko:
+
+![Blatt Risiko](abbildungen/risiko.png)
+
+Zusätzlich zeigt die Excel das Risiko im Worst Case. Schwellen, Einläufe und Rinnen sind Kompensationsmaßnahmen und halten Wasser nur bis zu einem gewissen Punkt zurück. Wirken sie nicht mehr, etwa bei extremer Regenmenge oder zugesetztem Gitter, ist die Vulnerabilität maximal. Oft hilft schon eine regelmäßige Reinigung der Einläufe vor der Starkregensaison.
 
 ## Beispiel: U-Bahn-Haltestelle Steinstraße/Königsallee, Düsseldorf
 
@@ -72,11 +87,11 @@ Im Blatt *Risiko* steht für jede Eintrittsstelle Gefahr, Vulnerabilität und da
 
 Risikomatrix der Station (mittlerer Index 2,50, alle Zugänge mit mittlerer Vulnerabilität):
 
-| Gefahr (Zeilen), Vulnerabilität (Spalten) | gering (1) | mittel (2) | hoch (3) |
-|---|---|---|---|
-| **hoch** | | 🟧 **T1** (40 cm) | |
-| **mittel** | | 🟨 T2, T3, T6, T8 | |
-| **gering** | | 🟩 A1, T4, T5, T7 | |
+| Gefahr (Zeilen), Vulnerabilität (Spalten) | gering (1) | mittel (2)     | hoch (3) |
+| ----------------------------------------- | ---------- | -------------- | -------- |
+| **hoch**                                  |            | **T1** (40 cm) |          |
+| **mittel**                                |            | T2, T3, T6, T8 |          |
+| **gering**                                |            | A1, T4, T5, T7 |          |
 
 Solange Gitter und Schwellen wirken, hält die Station. Versagen sie, ist die Vulnerabilität maximal, jeder Zugang steigt eine Stufe, und T1 landet im roten Feld. Zum Vergleich: Ab etwa 0,35 m Wassertiefe bei 0,5 m/s kann ein Kind den Halt verlieren. Beim Aufzug A1 zeigt die Karte 0 cm, obwohl die Straße daneben überflutet ist. Das ist vermutlich ein Artefakt des Rasters, und deshalb gehört die Begehung dazu.
 
@@ -89,6 +104,14 @@ Solange Gitter und Schwellen wirken, hält die Station. Versagen sie, ist die Vu
 
 ## Herkunft
 
-Methode von Hendrik Platz und Tom Thum, entwickelt im Modul Naturgefahren und -risiken (Prof. Dr. Alexander Fekete), Institut für Rettungsingenieurwesen und Gefahrenabwehr, TH Köln, 2026. Die ursprüngliche Anwendung: [Steckbrief in RIW-Projekte](https://github.com/2708Tom/RIW-Projekte/tree/main/2026-07_NGR_Starkregen-U-Bahn).
+Methode von Hendrik Platz und Tom Thum, entwickelt im Modul Naturgefahren und -risiken (Prof. Dr. Alexander Fekete), Institut für Rettungsingenieurwesen und Gefahrenabwehr, TH Köln, 2026. Die Hausarbeit liegt als PDF bei: [`hausarbeit/hausarbeit_starkregen_u-bahn.pdf`](hausarbeit/hausarbeit_starkregen_u-bahn.pdf).
 
 Daten im Beispiel: Hinweiskarte Starkregengefahren © BKG; Starkregengefahrenkarte NRW, Geobasis NRW; © OpenStreetMap-Mitwirkende.
+
+## Quellen und Links
+
+- BBK: [Risikoanalyse im Bevölkerungsschutz. Ein Stresstest für die Allgemeine Gefahrenabwehr und den Katastrophenschutz](https://www.bbk.bund.de/SharedDocs/Downloads/DE/Mediathek/Publikationen/PiB/PiB-16-risikoanalyse-bevoelkerungsschutz.pdf?__blob=publicationFile&v=9), Praxis im Bevölkerungsschutz Band 16, Schema für die Szenariobeschreibung
+- BKG: [Hinweiskarte Starkregengefahren, Fragen und Antworten](https://sg.geodatenzentrum.de/web_public/gdz/dokumentation/deu/hwk_srg_FAQ.pdf), Datengrundlage für die Gefahr
+- OECD und JRC: [Handbook on Constructing Composite Indicators. Methodology and User Guide](https://publications.jrc.ec.europa.eu/repository/handle/JRC47008) (2008), Vorgehen für den Vulnerabilitätsindex
+- [DIN EN ISO 22324:2025-08](https://www.dinmedia.de/en/standard/din-en-iso-22324/391925246) Sicherheit und Resilienz, Gefahrenabwehr, Leitfaden für farbcodierte Alarme, Farbwerte nach Anhang B
+- Hausarbeit: [Risikoanalyse pluvialer Überflutungen an urbanen U-Bahn-Systemen](hausarbeit/hausarbeit_starkregen_u-bahn.pdf) (PDF)
