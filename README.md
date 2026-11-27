@@ -1,4 +1,4 @@
-# Starkregen: Risikoanalyse vor Ort
+<img src=".github/bilder/link-vorschau.png" alt="Starkregen: Risikoanalyse vor Ort" width="100%">
 
 **Gefahr aus der Karte, Vulnerabilität von der Straße: ein Werkzeug, um das Überflutungsrisiko eines Objekts zu bewerten, und zwar Eintrittsstelle für Eintrittsstelle.**
 
